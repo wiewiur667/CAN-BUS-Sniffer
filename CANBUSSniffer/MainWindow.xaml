@@ -1,0 +1,72 @@
+﻿<Window x:Class="CANBUSSniffer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CANBUSSniffer"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="800" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Closing="Window_Closing">
+    <DockPanel  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  Margin="0,0,0,0" Background="#FFFB0000">
+        <Menu VerticalAlignment="Top" DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Export To CSV"/>
+                <MenuItem Header="_Exit"/>
+            </MenuItem>
+            <MenuItem Header="Settings">
+                <StackPanel Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                    <Label>Com Port:</Label>
+                    <TextBox Name="ComPortTextBox" VerticalContentAlignment="Center" MaxLength="5" VerticalAlignment="Center" Width="60" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Text="{Binding ComName}" LostFocus="ComSettingsTextBoxes_LostFocus"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" UseLayoutRounding="False">
+                    <Label>Com Speed:</Label>
+                    <TextBox Name="ComSpeedTextBox" VerticalContentAlignment="Center" MaxLength="7" VerticalAlignment="Center" HorizontalContentAlignment="Center" Width="60" PreviewTextInput="ComSpeedTextBox_PreviewTextInput" Text="{Binding ComSpeed}" LostFocus="ComSettingsTextBoxes_LostFocus"/>
+                </StackPanel>
+                <MenuItem Header="Clear" Click="Clear_Menu_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Start" IsEnabled="False" Click="Start_Menu_Click" Name="StartMenuBtn"/>
+        </Menu>
+
+
+
+        <StatusBar DockPanel.Dock="Bottom" Height="35" VerticalContentAlignment="Bottom" BorderThickness="0,2,0,0" SnapsToDevicePixels="True" Grid.Row="2" HorizontalContentAlignment="Stretch" VerticalAlignment="Bottom">
+            <StackPanel Orientation="Horizontal">
+                <Label Name="ComPortLabel" Content="{Binding ComName,NotifyOnSourceUpdated=True}"></Label>
+                <Label Name="ComSpeedLabel" Content="{Binding ComSpeed,Mode=OneWay}"></Label>
+                <Label Name="StartedLablel" Content="{Binding IsOpen, Mode=OneWay, Converter={StaticResource BooleanStartStopConverter}}"></Label>
+            </StackPanel>
+        </StatusBar>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Name="FilterSP">
+            <TextBox Width="75"/>
+            <TextBox Width="75"/>
+            <TextBox Width="75"/>
+            <TextBox Width="75"/>
+            <TextBox Width="75"/>
+            <TextBox Width="75"/>
+            <TextBox Width="75"/>
+            <TextBox Width="75"/>
+        </StackPanel>
+        <local:MessagesDataGrid
+            x:Name="MessagesDataGrid"
+            AutoGenerateColumns="False"
+            VerticalScrollBarVisibility="Visible"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            ColumnWidth="75"
+            DockPanel.Dock="Top"
+            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+            EnableRowVirtualization="True"
+            VirtualizingPanel.VirtualizationMode="Standard"
+            CellStyle="{StaticResource CellStyle}">
+            <DataGrid.GroupStyle>
+                <GroupStyle ContainerStyle="{StaticResource GroupHeaderStyle}">
+                    <GroupStyle.Panel>
+                        <ItemsPanelTemplate>
+                            <DataGridRowsPresenter/>
+                        </ItemsPanelTemplate>
+                    </GroupStyle.Panel>
+                </GroupStyle>
+            </DataGrid.GroupStyle>
+        </local:MessagesDataGrid>
+    </DockPanel>
+
+</Window>
